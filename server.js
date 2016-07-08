@@ -7,22 +7,21 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
 //config
+mongoose.connect(process.env.MONGODB_URI);
 
-mongoose.connect(MONGODB_URI);
-
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/app'));
 app.use(morgan('dev'));
-app.use(bodyParser.urlEncoded({'extended': 'true'}));
+app.use(bodyParser.urlencoded({'extended': 'true'}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 app.use(methodOverride());
 
 //model
 var Event = mongoose.model('Event', {
-    text: String,
-    date: req.body.date,
-    timeStart: req.body.eventStart,
-    timeEnd: req.body.eventEnd
+    title: String,
+    eventStart: Date,
+    eventEnd: Date,
+    done: Boolean
 });
 
 //ROUTES
