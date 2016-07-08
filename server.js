@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
 //config
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI || process.env.LOCAL_MONGODB_URI);
 
 app.use(express.static(__dirname + '/app'));
 app.use(morgan('dev'));
