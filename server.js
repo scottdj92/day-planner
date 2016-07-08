@@ -81,6 +81,11 @@ var Event = mongoose.model('Event', {
         });
     });
 
+//application
+app.get('*', function(req, res) {
+    res.sendfile('./app/app.html');
+});
+
 //start app
 app.listen(8080);
 console.log('Day Planner listening on port 8080');
