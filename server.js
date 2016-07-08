@@ -19,12 +19,67 @@ app.use(methodOverride());
 
 //model
 var Event = mongoose.model('Event', {
-    text: String
+    text: String,
+    date: req.body.date,
+    timeStart: req.body.eventStart,
+    timeEnd: req.body.eventEnd
 });
 
 //ROUTES
 
+    //api
+    //get all events
+    app.get('/api/events', function(req, res) {
+        //leverage mongoose to find all events in db
+        Event.find(function(err, events) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(events);
+            }
+        });
+    });
 
+    //create event
+    app.post('/api/events', function(req, res) {
+        Event.create({
+            title: req.body.text,
+            date: req.body.date,
+            timeStart: req.body.eventStart,
+            timeEnd: req.body.eventEnd,
+            done: false
+        }, function(err, event) {
+            if (err) {
+                res.send(err);
+            } else {
+                Event.find(function(err, events) {
+                    if(err) {
+                        res.send(err);
+                    } else {
+                        res.json(events);
+                    }
+                });
+            }
+        });
+    });
+
+    app.delete('/api/events/:event_id', function(req, res) {
+        Event.remove({
+            _id: req.params.event_id
+        }, function(err, event) {
+            if(err) {
+                res.send(err);
+            } else {
+                Event.find(function(err, events) {
+                    if(err) {
+                        res.send(err);
+                    } else {
+                        res.json(events);
+                    }
+                });
+            }
+        });
+    });
 
 //start app
 app.listen(8080);
